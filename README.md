@@ -1,171 +1,460 @@
-# Movie Ticket Booking System
+Movie Ticket Booking System
 
-**System Design Assignment – 1**
+System Design Assignment – 1
 
-- **Course:** B.Tech CSE – Semester 5
-- **Subject:** System Design
-- **Subject Code:** TCS-504
-- **Student:** AYUSHI SAINI
+Course: B.Tech CSE – Semester 5
+Subject: System Design
+Subject Code: TCS-504
+Student: AYUSHI SAINI
 
----
+1. Project Overview
 
-## 1. Project Overview
-
-This project is a simple **Movie Ticket Booking System** for a single cinema.
+This project is a simple Movie Ticket Booking System for a single cinema.
 
 The customer can:
-- View currently playing movies
-- View shows for a selected movie
-- View available / booked seats
-- Select one or more seats
-- Calculate ticket price
-- Pay using **UPI**, **Card**, or **Cash**
-- Generate and print a ticket
-- Cancel a confirmed booking
-- Automatically revert seats back to `AVAILABLE` upon cancellation
 
-The system also handles invalid seats, already-booked seats, and failed payments.
+View currently playing movies
 
----
+View shows for a selected movie
 
-## 2. Functional Requirements
+View available/booked seats
 
-### FR1 – List Movies
-The system displays all movies currently playing in the cinema, including their title, language, and duration.
+Select one or more seats
 
-### FR2 – List Shows
+Calculate ticket price
+
+Pay using UPI, Card or Cash
+
+Generate and print a ticket
+
+Cancel a confirmed booking
+
+Get seats back to AVAILABLE after cancellation
+
+The system also handles invalid seats, already-booked seats and failed payments.
+
+2. Functional Requirements
+
+FR1 – List Movies
+
+The system displays all movies currently playing in the cinema, including their title, language and duration.
+
+FR2 – List Shows
+
 The customer can select a movie and view its available shows, including screen number and start time.
 
-### FR3 – Display Seat Layout
-The customer can select a show and view its seats with their seat type and status as `AVAILABLE` or `BOOKED`.
+FR3 – Display Seat Layout
 
-### FR4 – Booking
-- The customer selects one or more seats.
-- If any selected seat is invalid or already `BOOKED`, the complete booking is rejected.
-- No seat status is changed when the booking is rejected.
-- Booking is confirmed only after successful payment.
+The customer can select a show and view its seats with their seat type and status as AVAILABLE or BOOKED.
 
-### FR5 – Calculate Booking Price
+FR4 – Booking
+
+The customer selects one or more seats.
+
+If any selected seat is invalid or already BOOKED, the complete booking is rejected.
+
+No seat status is changed when the booking is rejected.
+
+Booking is confirmed only after successful payment.
+
+FR5 – Calculate Booking Price
+
 The total price is calculated according to seat type:
 
-| Seat Type | Price |
-| :--- | :--- |
-| **SILVER** | ₹150 |
-| **GOLD** | ₹250 |
-| **PLATINUM** | ₹400 |
+Seat Type
 
-### FR6 – Payment
+Price
+
+SILVER
+
+₹150
+
+GOLD
+
+₹250
+
+PLATINUM
+
+₹400
+
+FR6 – Payment
+
 Exactly one payment method is selected:
-- **UPI**
-- **Card**
-- **Cash**
 
-**Flow:**
-- If payment fails:
-  - Booking status becomes `FAILED`
-  - Selected seats are released
-- If payment succeeds:
-  - Booking status becomes `CONFIRMED`
+UPI
 
-### FR7 – Generate Ticket
+Card
+
+Cash
+
+If payment fails:
+
+Booking becomes FAILED
+
+Selected seats are released
+
+If payment succeeds:
+
+Booking becomes CONFIRMED
+
+FR7 – Generate Ticket
+
 A ticket is generated for a confirmed booking containing:
-- Booking ID
-- Customer name
-- Movie name
-- Screen number
-- Show time
-- Seat numbers
-- Total amount
-- Booking status
 
-### FR8 – Cancel Booking
-- A confirmed booking can be cancelled.
-- After cancellation, all seats associated with that booking become `AVAILABLE` again.
+Booking ID
 
----
+Customer name
 
-## 3. Non-Functional Requirements
+Movie name
 
-### 3.1 Modularity
-Each class is kept in a separate `.cpp` file and has one clear responsibility.
+Screen number
 
-### 3.2 Extensibility
-The payment system is designed so that a new payment method such as `NetBankingPayment` can be added as a new class derived from `Payment`.
+Show time
 
-### 3.3 Input Validation
-Invalid menu choices, invalid movie/show choices, and invalid seat numbers are handled gracefully with clear messages instead of crashing.
+Seat numbers
 
-### 3.4 Maintainability
-The code uses meaningful names, small functions, constants for prices, and separate classes for distinct responsibilities.
+Total amount
 
----
+Booking status
 
-## 4. Noun–Verb Analysis
+FR8 – Cancel Booking
 
-### 4.1 Noun Analysis
+A confirmed booking can be cancelled.
 
-| Noun | Class? | Reason / Representation |
-| :--- | :---: | :--- |
-| **Movie** | Yes | Stores title, language, and duration |
-| **Show** | Yes | Represents a movie screening |
-| **Screen** | Yes | Represents one auditorium |
-| **Seat** | Yes | Stores seat number and seat type |
-| **Seat Layout** | No | It is a view of a show's seats |
-| **Seat Type** | Yes / Enum | Fixed values: `SILVER`, `GOLD`, `PLATINUM` |
-| **Cinema** | Yes | Represents the theatre and owns screens |
-| **Booking** | Yes | Stores booking information |
-| **Customer** | Yes | Stores customer information |
-| **Payment** | Yes | Abstract payment contract |
-| **UPI, Card, Cash** | Yes | Specific payment implementations |
-| **Price** | No | Calculated value |
-| **Ticket** | No | Output generated by `TicketPrinter` |
-| **Cancel** | No | Action / method |
-| **Menu / System** | No | Console interface |
+After cancellation, all seats associated with that booking become AVAILABLE again.
 
-### 4.2 Verb Analysis
+3. Non-Functional Requirements
 
-| Verb | Possible Method | Class |
-| :--- | :--- | :--- |
-| List movies | `displayMovies()` | `Main` / `Cinema` |
-| List shows | `displayShows()` | `Main` / `Show` |
-| Display seats | `displaySeats()` | `Show` |
-| Select seat | `getShowSeat()` | `Show` |
-| Book seat | `bookSeat()` | `ShowSeat` |
-| Release seat | `releaseSeat()` | `ShowSeat` |
-| Calculate price | `calculateTotal()` | `PriceCalculator` |
-| Pay | `pay()` | `Payment` |
-| Create booking | `bookTicket()` | `BookingService` |
-| Confirm booking | `setStatus()` | `Booking` |
-| Generate ticket | `printTicket()` | `TicketPrinter` |
-| Cancel booking | `cancelBooking()` | `BookingService` |
+3.1 Modularity
 
----
+Each class is kept in a separate .cpp file and has one clear responsibility.
 
-## 5. Class Responsibilities
+3.2 Extensibility
 
-| Class | Knows (Attributes) | Does (Responsibilities) | Must NOT Do |
-| :--- | :--- | :--- | :--- |
-| **Movie** | Title, language, duration | Provides movie information | Handle booking / payment |
-| **Seat** | Number, type | Provides seat information and price | Maintain show booking status |
-| **Screen** | Screen number, seats | Owns physical seats | Handle payment |
-| **Cinema** | Name, screens | Owns screens | Calculate price |
-| **Show** | Movie, screen, time, ShowSeats | Maintains show-specific seats | Process payment |
-| **ShowSeat** | Seat, status | Books/releases one seat | Calculate total price |
-| **Customer** | Name, phone | Stores customer information | Process payment |
-| **Booking** | ID, customer, show, seats, amount, status | Represents booking | Print ticket |
-| **Payment** | Payment contract | Defines `pay()` | Know booking details |
-| **UpiPayment** | UPI payment | Processes UPI payment | Manage booking / seats |
-| **CardPayment** | Card payment | Processes Card payment | Manage booking / seats |
-| **CashPayment** | Cash payment | Processes Cash payment | Manage booking / seats |
-| **PriceCalculator** | — | Calculates total price | Book / release seats |
-| **TicketPrinter** | — | Prints ticket | Modify booking |
-| **BookingService** | Services and bookings | Coordinates booking flow | Implement payment details |
+The payment system is designed so that a new payment method such as NetBanking can be added as a new class derived from Payment.
 
----
+3.3 Input Validation
 
-## 6. Class Diagram
+Invalid menu choices, invalid movie/show choices and invalid seat numbers are handled with clear messages instead of crashing.
 
-```mermaid
+3.4 Maintainability
+
+The code uses meaningful names, small functions, constants for prices and separate classes for separate responsibilities.
+
+4. Noun–Verb Analysis
+
+4.1 Noun Analysis
+
+Noun
+
+Class?
+
+Reason / Representation
+
+Movie
+
+Yes
+
+Stores title, language and duration
+
+Show
+
+Yes
+
+Represents a movie screening
+
+Screen
+
+Yes
+
+Represents one auditorium
+
+Seat
+
+Yes
+
+Stores seat number and seat type
+
+Seat Layout
+
+No
+
+It is a view of a show's seats
+
+Seat Type
+
+Yes / Enum
+
+Fixed values: SILVER, GOLD, PLATINUM
+
+Cinema
+
+Yes
+
+Represents the theatre and owns screens
+
+Booking
+
+Yes
+
+Stores booking information
+
+Customer
+
+Yes
+
+Stores customer information
+
+Payment
+
+Yes
+
+Abstract payment contract
+
+UPI, Card, Cash
+
+Yes
+
+Payment implementations
+
+Price
+
+No
+
+Calculated value
+
+Ticket
+
+No
+
+Output generated by TicketPrinter
+
+Cancel
+
+No
+
+Action/method
+
+Menu/System
+
+No
+
+Console interface
+
+4.2 Verb Analysis
+
+Verb
+
+Possible Method
+
+Class
+
+List movies
+
+displayMovies()
+
+Main / Cinema
+
+List shows
+
+displayShows()
+
+Main / Show
+
+Display seats
+
+displaySeats()
+
+Show
+
+Select seat
+
+getShowSeat()
+
+Show
+
+Book seat
+
+bookSeat()
+
+ShowSeat
+
+Release seat
+
+releaseSeat()
+
+ShowSeat
+
+Calculate price
+
+calculateTotal()
+
+PriceCalculator
+
+Pay
+
+pay()
+
+Payment
+
+Create booking
+
+bookTicket()
+
+BookingService
+
+Confirm booking
+
+setStatus()
+
+Booking
+
+Generate ticket
+
+printTicket()
+
+TicketPrinter
+
+Cancel booking
+
+cancelBooking()
+
+BookingService
+
+5. Class Responsibilities
+
+Class
+
+Knows
+
+Does
+
+Must NOT Do
+
+Movie
+
+Title, language, duration
+
+Provides movie information
+
+Handle booking/payment
+
+Seat
+
+Number, type
+
+Provides seat information and price
+
+Maintain show booking status
+
+Screen
+
+Screen number, seats
+
+Owns physical seats
+
+Handle payment
+
+Cinema
+
+Name, screens
+
+Owns screens
+
+Calculate price
+
+Show
+
+Movie, screen, time, ShowSeats
+
+Maintains show-specific seats
+
+Process payment
+
+ShowSeat
+
+Seat, status
+
+Books/releases one seat
+
+Calculate total price
+
+Customer
+
+Name, phone
+
+Stores customer information
+
+Process payment
+
+Booking
+
+ID, customer, show, seats, amount, status
+
+Represents booking
+
+Print ticket
+
+Payment
+
+Payment contract
+
+Defines pay()
+
+Know booking details
+
+UpiPayment
+
+UPI payment
+
+Processes UPI payment
+
+Manage booking/seats
+
+CardPayment
+
+Card payment
+
+Processes Card payment
+
+Manage booking/seats
+
+CashPayment
+
+Cash payment
+
+Processes Cash payment
+
+Manage booking/seats
+
+PriceCalculator
+
+—
+
+Calculates total price
+
+Book/release seats
+
+TicketPrinter
+
+—
+
+Prints ticket
+
+Modify booking
+
+BookingService
+
+Services and bookings
+
+Coordinates booking flow
+
+Implement payment details
+
+6. Class Diagram
+
+The following Mermaid diagram can be viewed directly on GitHub.
+
 classDiagram
 
 class Movie {
@@ -339,21 +628,21 @@ Seat --> SeatType : uses
 ShowSeat --> SeatStatus : uses
 Booking --> BookingStatus : uses
 BookingService --> Booking : manages
-```
 
-### UML Relationship Key
-- `*--` : Composition
-- `o--` : Aggregation
-- `-->` : Association / Dependency
-- `<|--` : Inheritance
+UML Relationship Meaning
 
----
+*-- = Composition
 
-## 7. Sequence Diagram
+o-- = Aggregation
 
-**Use Case:** Customer books 1 seat and pays by UPI
+--> = Association / dependency
 
-```mermaid
+<|-- = Inheritance
+
+7. Sequence Diagram
+
+Use Case: Customer books 1 seat and pays by UPI
+
 sequenceDiagram
 
 actor Customer
@@ -397,12 +686,12 @@ activate Booking
 Booking-->>BookingService: Booking created
 deactivate Booking
 
-BookingService->>Payment: <<create>> Payment
-activate Payment
+BookingService->>UPI Payment: <<create>> Payment
+activate UPI Payment
 
-BookingService->>Payment: pay(totalAmount)
-Payment-->>BookingService: payment successful
-deactivate Payment
+BookingService->>UPI Payment: pay(totalAmount)
+UPI Payment-->>BookingService: payment successful
+deactivate UPI Payment
 
 BookingService->>Booking: setStatus(CONFIRMED)
 activate Booking
@@ -416,43 +705,61 @@ deactivate TicketPrinter
 
 BookingService-->>Customer: Ticket
 deactivate BookingService
-```
 
----
+8. SOLID Principles
 
-## 8. SOLID Principles
+S – Single Responsibility Principle
 
-- **S – Single Responsibility Principle**
-  - Each class has one main responsibility.
-  - *Examples:*
-    - `PriceCalculator` only calculates price.
-    - `TicketPrinter` only prints tickets.
-    - `BookingService` controls the booking flow.
+Each class has one main responsibility.
 
-- **O – Open/Closed Principle**
-  - The payment system can be extended without modifying existing code.
-  - *Example:* A new `NetBankingPayment` class can inherit from `Payment` without changing existing payment classes.
+Examples:
 
-- **L – Liskov Substitution Principle**
-  - Any child payment class can be used through the `Payment` base class pointer:
-    ```cpp
-    Payment* payment;
-    ```
-  - The program can interchangeably use `UpiPayment`, `CardPayment`, or `CashPayment` through the same `Payment` interface.
+PriceCalculator only calculates price.
 
-- **I – Interface Segregation Principle**
-  - The `Payment` class contains only payment-related operations (`pay()`, `getMethod()`). It does not force classes to implement unrelated methods.
+TicketPrinter only prints tickets.
 
-- **D – Dependency Inversion Principle**
-  - `BookingService` receives a `Payment*` abstraction instead of directly depending on concrete implementations like `UpiPayment`, `CardPayment`, or `CashPayment`.
+BookingService controls the booking flow.
 
----
+O – Open/Closed Principle
 
-## 9. OOP Concepts Used
+The payment system can be extended.
 
-### 9.1 Encapsulation
-Data members are declared `private` and accessed via public methods.
-```cpp
+For example, a new:
+
+NetBankingPayment
+
+class can inherit from Payment without changing the existing payment classes.
+
+L – Liskov Substitution Principle
+
+Any child payment class can be used through the Payment base class:
+
+Payment* payment;
+
+The program can use:
+
+UpiPayment
+CardPayment
+CashPayment
+
+through the same Payment interface.
+
+I – Interface Segregation Principle
+
+The Payment class contains only payment-related operations. It does not force every payment class to implement unrelated methods.
+
+D – Dependency Inversion Principle
+
+BookingService receives a Payment* instead of directly depending on UpiPayment, CardPayment or CashPayment.
+
+9. OOP Concepts Used
+
+9.1 Encapsulation
+
+Data members are private.
+
+Example:
+
 class Movie
 {
 private:
@@ -460,84 +767,85 @@ private:
     string language;
     int duration;
 };
-```
 
-### 9.2 Abstraction
-`Payment` is an abstract base class with pure virtual functions:
-```cpp
+9.2 Abstraction
+
+Payment is an abstract class:
+
 class Payment
 {
 public:
     virtual bool pay(double amount) = 0;
-    virtual string getMethod() = 0;
-    virtual ~Payment() {}
 };
-```
 
-### 9.3 Inheritance
-```cpp
+9.3 Inheritance
+
 class UpiPayment : public Payment
 {
-    // ...
 };
-```
-```text
+
+Similarly:
+
 Payment
  ├── UpiPayment
  ├── CardPayment
  └── CashPayment
-```
 
-### 9.4 Runtime Polymorphism
-```cpp
-Payment* payment = choosePayment();
+9.4 Runtime Polymorphism
+
+Payment* payment;
 payment->pay(amount);
-```
-The actual payment implementation is dynamically dispatched at runtime.
 
-### 9.5 Static Members
-Booking IDs are sequentially generated using a static counter:
-```cpp
+The actual payment implementation is selected at runtime.
+
+9.5 Compile-Time Polymorphism
+
+Overloaded constructors can be used in Booking.
+
+Booking(Customer* customer, Show* show);
+
+Booking(Customer* customer, Show* show, double amount);
+
+9.6 Static Member
+
+Booking IDs are generated using:
+
 static int nextBookingId;
-```
 
-### 9.6 `this` Pointer
-Used in constructors to distinguish member variables from parameters:
-```cpp
+9.7 this Keyword
+
+Used in constructors:
+
 this->title = title;
-```
 
-### 9.7 Composition
-- `Cinema` → `Screen`
-- `Screen` → `Seat`
-- `Show` → `ShowSeat`
+9.8 Composition
 
-*(Parent class owns and manages the lifecycle of these objects).*
+Cinema → Screen
+Screen → Seat
+Show → ShowSeat
 
-### 9.8 Aggregation
-- `Show` → `Movie`
-- `Show` → `Screen`
-- `Booking` → `ShowSeat`
+The parent owns these objects.
 
-*(Associated objects exist independently of the container).*
+9.9 Aggregation
 
-### 9.9 Association
-- `Customer` → `Booking`
-- `BookingService` → `Customer`
+Show → Movie
+Show → Screen
+Booking → ShowSeat
 
-*(Objects interact and collaborate with each other).*
+The related object can exist independently.
 
----
+9.10 Association
 
-## 10. Project File Structure
+Customer → Booking
+BookingService → Customer
 
-```text
+The objects interact but neither owns the other.
+
+10. Project File Structure
+
 movie booking/
 │
 ├── .vscode/
-│   ├── c_cpp_properties.json
-│   ├── launch.json
-│   └── settings.json
 │
 ├── booking.cpp
 ├── bookingService.cpp
@@ -555,48 +863,85 @@ movie booking/
 ├── ticketPrinter.cpp
 │
 └── README.md
-```
 
-### Class-to-File Mapping
+Class-to-file mapping
 
-| File | Class / Enum |
-| :--- | :--- |
-| `movie.cpp` | `Movie` |
-| `seat.cpp` | `Seat`, `SeatType` |
-| `screen.cpp` | `Screen` |
-| `cinema.cpp` | `Cinema` |
-| `show.cpp` | `Show` |
-| `showSeat.cpp` | `ShowSeat`, `SeatStatus` |
-| `customer.cpp` | `Customer` |
-| `booking.cpp` | `Booking`, `BookingStatus` |
-| `payment.cpp` | `Payment` |
-| `paymentType.cpp` | `UpiPayment`, `CardPayment`, `CashPayment` |
-| `PriceCalculator.cpp` | `PriceCalculator` |
-| `ticketPrinter.cpp` | `TicketPrinter` |
-| `bookingService.cpp` | `BookingService` |
-| `main.cpp` | Console menu / Program entry |
+File
 
----
+Class
 
-## 11. How to Compile and Run
+movie.cpp
 
-The project includes all class files directly in `main.cpp`.
+Movie
 
-### Compile using GCC:
-```bash
-g++ -std=c++11 -Wall -Wextra main.cpp -o main.exe
-```
+seat.cpp
 
-### Run on Windows:
-```powershell
-.\main.exe
-```
+Seat + SeatType
 
----
+screen.cpp
 
-## 12. Sample Demo Run
+Screen
 
-```text
+cinema.cpp
+
+Cinema
+
+show.cpp
+
+Show
+
+showSeat.cpp
+
+ShowSeat + SeatStatus
+
+customer.cpp
+
+Customer
+
+booking.cpp
+
+Booking + BookingStatus
+
+payment.cpp
+
+Payment
+
+paymentType.cpp
+
+UpiPayment, CardPayment, CashPayment
+
+PriceCalculator.cpp
+
+PriceCalculator
+
+ticketPrinter.cpp
+
+TicketPrinter
+
+bookingService.cpp
+
+BookingService
+
+main.cpp
+
+Console menu / program entry
+
+11. How to Compile and Run
+
+The project does not use header files.
+
+All class files are included in main.cpp.
+
+Compile using:
+
+g++ main.cpp -o moviebooking
+
+Run on Windows:
+
+.\moviebooking.exe
+
+12. Sample Demo Run
+
 ====================================
        MOVIE TICKET BOOKING
 ====================================
@@ -645,8 +990,6 @@ Enter seat 2: B2
 
 Choose payment method: 1
 
-Total Amount: Rs.400
-
 UPI Payment: Rs.400
 Enter 1 for successful payment
 Enter 0 for failed payment
@@ -668,31 +1011,28 @@ Seats      : A1, B2
 Amount     : Rs.400
 Status     : CONFIRMED
 ====================================
-```
 
----
+13. Edge Cases
 
-## 13. Edge Cases
+Case 1 – Already Booked Seat
 
-### Case 1 – Already Booked Seat
-```text
 Enter seat: A1
 
 Seat A1 is already BOOKED.
 Booking rejected.
-```
-*No seat status is changed.*
 
-### Case 2 – Invalid Seat
-```text
+No seat status is changed.
+
+Case 2 – Invalid Seat
+
 Enter seat: Z9
 
 Invalid seat: Z9
-```
-*The program validates inputs safely without crashing.*
 
-### Case 3 – Failed Payment
-```text
+The program does not crash.
+
+Case 3 – Failed Payment
+
 Choose payment method: 1
 
 Enter 0 for failed payment
@@ -703,33 +1043,54 @@ UPI payment failed.
 Payment failed.
 Seats have been released.
 Booking status: FAILED
-```
 
-### Case 4 – Cancellation
-```text
+Case 4 – Cancellation
+
 Choose: 3
 
 Enter Booking ID: 1001
 
 Booking cancelled successfully.
 All seats are AVAILABLE again.
-```
 
----
+14. Deliberately Not Implemented
 
-## 14. Deliberately Not Implemented
+A database/persistent storage system is deliberately not implemented because this assignment is scoped as a small console-based single-cinema system. The required features focus on movie listing, shows, seats, booking, payment, ticket printing and cancellation.
 
-A persistent database storage system is deliberately not implemented because this assignment is scoped as an in-memory, console-based single-cinema system. The implementation focuses on object-oriented system design principles, relationships, design patterns, ticket booking, payment abstractions, and lifecycle management.
+15. Conclusion
 
----
+The Movie Ticket Booking System demonstrates:
 
-## 15. Conclusion
+Requirement Analysis
 
-The Movie Ticket Booking System effectively demonstrates:
-- **Requirement Analysis & Domain Modeling**
-- **Object-Oriented Design (OOP)**: Encapsulation, Abstraction, Inheritance, Polymorphism
-- **Object Relationships**: Composition, Aggregation, Association
-- **UML Modeling**: Class Diagram & Sequence Diagram
-- **SOLID Design Principles**
-- **Modular C++ Architecture**
-- **Robust Input Validation & Edge Case Handling**
+Object-Oriented Design
+
+Class Design
+
+UML Class Diagram
+
+UML Sequence Diagram
+
+Encapsulation
+
+Abstraction
+
+Inheritance
+
+Polymorphism
+
+Composition
+
+Aggregation
+
+Association
+
+SOLID Principles
+
+Modular C++ programming
+
+Input validation
+
+Booking and payment flow
+
+Booking cancellation

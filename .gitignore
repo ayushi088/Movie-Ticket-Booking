@@ -1,9 +1,0 @@
-# Binaries and build artifacts
-*.exe
-*.o
-*.obj
-build/
-bin/
-
-# IDE files (optional)
-.vscode/
